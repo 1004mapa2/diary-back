@@ -21,6 +21,9 @@ public class BoardService {
     public List<FormDto> getBoardList(PageDto pageDto) {
         //한 페이지 표시 값 설정
         pageDto.setCount(10);
+        if(pageDto.getPage() == 0) {
+            pageDto.setPage(1);
+        }
         pageDto.setPage(pageDto.getPage() - 1);
 
         return boardMapper.getBoardList(pageDto);

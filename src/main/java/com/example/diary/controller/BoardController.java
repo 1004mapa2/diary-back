@@ -13,6 +13,7 @@ import java.util.List;
 
 @Tag(name = "일기장 API", description = "세부 설명 필요 시 작성")
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardService boardService;
