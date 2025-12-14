@@ -3,15 +3,25 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.diary.repository.BoardMapper">
-    <insert id="saveBoardContent">
+    <insert id="registerPost">
         INSERT INTO diary.diary_entries(title, content)
         VALUES(#{title}, #{content})
     </insert>
 
     <select id="getBoardList" resultType="FormDto">
-        SELECT title, content, TO_CHAR(created_at, 'YYYY-MM-DD HH24:MI') AS created_at
+        SELECT id, title, content, TO_CHAR(created_at, 'YYYY-MM-DD HH24:MI') AS created_at
         FROM diary.diary_entries
         ORDER BY created_at DESC
-        LIMIT #{count} OFFSET #{page} * #{count}
     </select>
+
+    <select id="getStatistics" resultType="StatisticsDto">
+        SELECT COUNT(*)                                                         AS total,
+               COUNT(*) FILTER (WHERE created_at >= DATE_TRUNC('month', NOW())) AS monthTotal,
+               COUNT(*) FILTER (WHERE created_at >= DATE_TRUNC('day', NOW()))   AS todayTotal
+        FROM diary.diary_entries
+    </select>
+
+    <delete id="deletePost">
+        DELETE FROM diary.diary_entries WHERE id = #{id}
+    </delete>
 </mapper>
